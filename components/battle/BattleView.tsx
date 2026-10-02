@@ -443,6 +443,17 @@ function CombatantCard({
         <span>{side.profile.protocols} protocols</span>
         <span>{side.profile.activeDays} active days</span>
       </div>
+      <div className="relative mt-3 flex flex-wrap gap-x-3 text-[0.64rem] text-echo-faint">
+        <span>
+          Market signal {side.profile.performanceConfidence
+            ? formatSignedPercent(side.profile.performanceScore ?? 0)
+            : 'unavailable'}
+        </span>
+        <span>·</span>
+        <span>
+          {side.profile.performanceSampleSize ?? 0} priced transfers · {side.profile.performanceConfidence ?? 0}% confidence
+        </span>
+      </div>
     </Panel>
   );
 }

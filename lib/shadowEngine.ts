@@ -184,7 +184,7 @@ interface CurveOptions {
 function buildCurve({ salt, days, target, volatility, start = SIMULATION_START_VALUE }: CurveOptions): number[] {
   const rng = createRng(hashString(salt));
   const horizon = Math.max(1, days);
-  const drift = Math.log(Math.max(1.02, target)) / horizon;
+  const drift = Math.log(Math.max(0.35, target)) / horizon;
   const vol = volatility / Math.sqrt(horizon / 30);
 
   const values: number[] = [start];
@@ -322,16 +322,33 @@ export function simulateBattle(
   const leftShadow = generateShadow(leftProfile);
   const rightShadow = generateShadow(rightProfile);
 
+  const targetFor = (profile: WalletProfile, shadow: AIShadowProfile) => {
+    const confidence = (profile.performanceConfidence ?? 0) / 100;
+    const observed = profile.performanceScore ?? 0;
+    const behavior =
+      (shadow.attributes.timing - 50) * 0.16
+      + (shadow.attributes.diversification - 50) * 0.08
+      + (profile.holdingScore - 50) * 0.05
+      + Math.max(-6, Math.min(24, (Math.log10(profile.transactions + 1) - 2) * 7))
+      - Math.max(0, profile.riskScore - 75) * 0.08;
+    const horizon = Math.sqrt(Math.max(7, days) / 90);
+    // Real price history carries most of the weight when available; behaviour is a modest prior.
+    const expectedPercent = Math.max(-45, Math.min(85,
+      (observed * (0.25 + confidence * 0.55) + behavior * (1 - confidence * 0.45)) * horizon,
+    ));
+    return 1 + expectedPercent / 100;
+  };
+
   const leftCurve = buildCurve({
     salt: `${leftProfile.address.toLowerCase()}:battle:${days}`,
     days,
-    target: 1.2 + (leftShadow.attributes.timing / 100) * 0.9 + (leftShadow.attributes.diversification / 100) * 0.5,
+    target: targetFor(leftProfile, leftShadow),
     volatility: 0.01 + (leftShadow.attributes.aggression / 100) * 0.02,
   });
   const rightCurve = buildCurve({
     salt: `${rightProfile.address.toLowerCase()}:battle:${days}`,
     days,
-    target: 1.2 + (rightShadow.attributes.timing / 100) * 0.9 + (rightShadow.attributes.diversification / 100) * 0.5,
+    target: targetFor(rightProfile, rightShadow),
     volatility: 0.01 + (rightShadow.attributes.aggression / 100) * 0.02,
   });
 

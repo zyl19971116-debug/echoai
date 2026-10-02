@@ -50,6 +50,11 @@ export interface WalletProfile {
   holdingScore: number;
   /** transactions per active day */
   tradingFrequency: number;
+  /** Price-movement signal inferred from priced public transfers; not accounting P&L. */
+  performanceScore?: number;
+  /** 0-100 confidence based on the amount of priceable history. */
+  performanceConfidence?: number;
+  performanceSampleSize?: number;
   archetype: Archetype;
   /** ISO date of first observed activity */
   firstSeen: string;
