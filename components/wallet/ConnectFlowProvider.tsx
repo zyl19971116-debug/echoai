@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { AnimatePresence } from 'framer-motion';
 import { useWallet } from '@/hooks/useWallet';
 import { ConnectFlowContext } from '@/hooks/useConnectFlow';
 import { WalletModal } from './WalletModal';
+import { ShadowLoader } from '@/components/shadow/ShadowLoader';
 import type { WalletKind } from '@/types';
 
 /**
@@ -13,11 +15,12 @@ import type { WalletKind } from '@/types';
  * call and get identical behaviour.
  */
 export function ConnectFlowProvider({ children }: { children: ReactNode }) {
-  const { status, connect, error, clearError, installedKinds } = useWallet();
+  const { address, status, connect, error, clearError, installedKinds } = useWallet();
   const router = useRouter();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [pendingKind, setPendingKind] = useState<WalletKind | null>(null);
+  const [creating, setCreating] = useState(false);
 
   useEffect(() => {
     if (status === 'error' && error) {
@@ -34,12 +37,12 @@ export function ConnectFlowProvider({ children }: { children: ReactNode }) {
 
       if (ok) {
         setModalOpen(false);
-        router.push('/my-echo');
+        setCreating(true);
       } else {
         setModalOpen(true);
       }
     },
-    [connect, router],
+    [connect],
   );
 
   const open = useCallback(
@@ -54,7 +57,7 @@ export function ConnectFlowProvider({ children }: { children: ReactNode }) {
     [clearError, runConnect],
   );
 
-  const value = useMemo(() => ({ open, busy: status === 'connecting' }), [open, status]);
+  const value = useMemo(() => ({ open, busy: creating || status === 'connecting' }), [open, creating, status]);
 
   return (
     <ConnectFlowContext.Provider value={value}>
@@ -71,6 +74,18 @@ export function ConnectFlowProvider({ children }: { children: ReactNode }) {
         errorMessage={error?.message ?? null}
         installedKinds={installedKinds}
       />
+
+      <AnimatePresence>
+        {creating && (
+          <ShadowLoader
+            address={address}
+            onComplete={() => {
+              setCreating(false);
+              router.push('/my-echo');
+            }}
+          />
+        )}
+      </AnimatePresence>
     </ConnectFlowContext.Provider>
   );
 }

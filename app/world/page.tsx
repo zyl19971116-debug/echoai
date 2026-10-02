@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
-import { RealRecordsView } from '@/components/records/RealRecordsView';
+import { WorldView } from '@/components/world/WorldView';
 
 export const metadata: Metadata = {
   title: 'The Echo World',
-  description: 'Query public wallet records from supported live chains.',
+  description:
+    'Humans vs AI — the global aggregate of every wallet forked into an AI Shadow, with the full shadow leaderboard.',
 };
 
 export default function WorldPage() {
-  return <RealRecordsView mode="world" />;
+  return <WorldView />;
 }

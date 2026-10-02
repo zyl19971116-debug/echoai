@@ -5,9 +5,9 @@ import type { AIShadowProfile, ApiEnvelope, WalletProfile } from '@/types';
 
 interface WalletProfilePayload {
   profile: WalletProfile;
-  shadowPreview: AIShadowProfile | null;
+  shadowPreview: AIShadowProfile;
   summary: { footprint: string; isEmpty: boolean; notice?: string };
-  dataSource: 'indexer';
+  dataSource: 'mock' | 'indexer';
 }
 
 export function useWalletProfile(address: string, enabled = true, chainId?: number) {

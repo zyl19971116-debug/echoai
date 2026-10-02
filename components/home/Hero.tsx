@@ -3,9 +3,12 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { GlowButton } from '@/components/ui/GlowButton';
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
+import { AvatarStack } from '@/components/ui/AvatarStack';
 import { Badge } from '@/components/ui/Badge';
 import { HeroVisual } from './HeroVisual';
 import { useConnectFlow } from '@/hooks/useConnectFlow';
+import { HERO_SOCIAL_PROOF } from '@/data/demo';
 
 const container = {
   hidden: {},
@@ -48,8 +51,9 @@ export function Hero() {
           </motion.h1>
 
           <motion.p variants={item} className="mt-5 max-w-[510px] text-[0.92rem] leading-relaxed text-echo-muted">
-            ECHO AI² reads real public on-chain history from supported networks.
-            <br className="hidden sm:block" /> No sample transactions, fictional balances, or demo wallet records.
+            ECHO AI² reads your on-chain history and creates an AI version of you.
+            <br className="hidden sm:block" /> A parallel wallet. A parallel life.
+            <span className="text-white/90"> Same start. Different choices.</span> Who will do better?
           </motion.p>
 
           <motion.div variants={item} className="mt-7 flex flex-wrap items-center gap-3.5">
@@ -62,9 +66,17 @@ export function Hero() {
             </GlowButton>
           </motion.div>
 
+          <motion.div variants={item} className="mt-6 flex flex-wrap items-center gap-4">
+            <AvatarStack count={5} seed="echo-ai-social" />
+            <p className="text-[0.8rem] leading-snug text-echo-muted">
+              <AnimatedNumber value={HERO_SOCIAL_PROOF.count} className="font-semibold text-white" duration={1800} />{' '}
+              people have created their AI Shadow
+            </p>
+          </motion.div>
+
           <motion.p variants={item} className="mt-5 flex items-center gap-2 text-[0.66rem] uppercase tracking-[0.18em] text-echo-faint">
             <span className="h-1 w-1 rounded-full bg-echo-cyan" />
-            Live public-chain records only · No custody
+            Public on-chain data only · Simulated results · No custody
           </motion.p>
         </motion.div>
 

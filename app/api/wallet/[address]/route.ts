@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { describeFootprint, WalletError } from '@/lib/walletAnalysis';
+import { generateShadow } from '@/lib/shadowEngine';
 import { fail, ok } from '@/lib/api';
 import { getWalletProfile } from '@/lib/onchain/walletService';
 
@@ -19,9 +20,10 @@ export async function GET(request: NextRequest, { params }: { params: { address:
     const requestedChain = Number(request.nextUrl.searchParams.get('chainId') ?? 1);
     const chainId = [1, 10, 56, 137, 8453, 42161, 4663].includes(requestedChain) ? requestedChain : 1;
     const result = await getWalletProfile(params.address, chainId);
+    const shadow = generateShadow(result.profile);
     return ok({
       profile: result.profile,
-      shadowPreview: null,
+      shadowPreview: shadow,
       summary: {
         footprint: describeFootprint(result.profile),
         isEmpty: Boolean(result.profile.isEmpty),

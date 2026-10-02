@@ -32,7 +32,7 @@ export function WalletButton({ className, size = 'md' }: WalletButtonProps) {
 
   const connected = status === 'connected' && Boolean(address);
   const walletLabels = { okx: 'OKX Wallet', metamask: 'MetaMask', phantom: 'Phantom', rainbow: 'Rainbow', coinbase: 'Coinbase Wallet', walletconnect: 'WalletConnect' } as const;
-  const connectedKind = kind ?? 'okx';
+  const connectedKind = kind && kind !== 'demo' ? kind : 'okx';
 
   useEffect(() => {
     if (!menuOpen) return undefined;

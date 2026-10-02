@@ -3,6 +3,8 @@
 import { motion, useTransform } from 'framer-motion';
 import { FigurePanel } from '@/components/shadow/FigurePanel';
 import { usePointerParallax } from '@/hooks/useParallax';
+import { ARCHETYPE_META } from '@/lib/archetypes';
+import { DEMO_SHADOW } from '@/data/demo';
 
 /**
  * YOU · VS · AI YOU
@@ -42,7 +44,7 @@ export function HeroVisual() {
           <FigurePanel
             variant="shadow"
             label="AI YOU"
-            sublabel="On-chain analysis"
+            sublabel={DEMO_SHADOW.archetype}
             sublabelTone="violet"
             src="/assets/echo/ai-shadow-v2.png"
             alt="Holographic silhouette representing the AI Shadow"
@@ -96,15 +98,15 @@ export function HeroVisual() {
       <div className="relative mt-3 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[0.6rem] uppercase tracking-[0.22em] text-echo-faint">
         <span className="flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-echo-blue" />
-          Public address
+          Same starting capital
         </span>
         <span className="flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-echo-violet" />
-          Live chain records
+          Different decisions
         </span>
         <span className="flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-echo-cyan" />
-          Read-only analysis
+          {ARCHETYPE_META[DEMO_SHADOW.archetype].tagline}
         </span>
       </div>
     </div>

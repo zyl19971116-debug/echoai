@@ -49,7 +49,7 @@ export function TransactionExplorer({ connectedAddress, initialChain = 'eth' }: 
             Public, read-only history. Results are requested one page at a time; switching chains resets pagination.
           </p>
         </div>
-        <Badge tone="cyan">Live indexer only</Badge>
+        <Badge tone={data?.source === 'indexer' ? 'cyan' : 'neutral'}>{data?.source === 'indexer' ? 'Live indexer' : 'Demo transactions'}</Badge>
       </div>
 
       <Panel className="overflow-hidden">

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     template: '%s · ECHO AI²',
   },
   description:
-    'ECHO AI² reads real public on-chain wallet history through supported live indexers without generating demo records.',
+    'ECHO AI² reads a wallet’s public on-chain history and generates an AI Shadow that makes different decisions from the same starting point. Humans vs AI — a real-time simulation experiment.',
   keywords: [
     'ECHO AI²',
     'AI Shadow',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     'on-chain analytics',
     'wallet analysis',
     'human vs AI',
-    'public chain records',
+    'simulation',
   ],
   openGraph: {
     title: 'ECHO AI² — What if your wallet had another life?',

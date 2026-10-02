@@ -194,7 +194,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (!raw) return () => window.removeEventListener('eip6963:announceProvider', onProvider);
-      const parsed = JSON.parse(raw) as { address?: string; kind?: WalletKind | 'demo'; network?: WalletNetwork };
+      const parsed = JSON.parse(raw) as { address?: string; kind?: WalletKind; network?: WalletNetwork };
       if (parsed.kind === 'demo') {
         window.localStorage.removeItem(STORAGE_KEY);
         return () => window.removeEventListener('eip6963:announceProvider', onProvider);

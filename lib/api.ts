@@ -22,11 +22,11 @@ const STATUS_BY_CODE: Record<ApiErrorCode, number> = {
   unknown: 500,
 };
 
-export function ok<T>(data: T, init?: ResponseInit, source: 'indexer' = 'indexer') {
+export function ok<T>(data: T, init?: ResponseInit, source: 'mock' | 'indexer' = 'mock') {
   const body: ApiEnvelope<T> = {
     ok: true,
     data,
-    meta: { source, generatedAt: new Date().toISOString() },
+    meta: { source, generatedAt: source === 'indexer' ? new Date().toISOString() : REFERENCE_DATE },
   };
   return NextResponse.json(body, {
     status: 200,
