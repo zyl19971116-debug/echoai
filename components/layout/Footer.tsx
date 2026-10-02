@@ -14,8 +14,7 @@ export function Footer() {
         <div>
           <EchoLogo />
           <p className="mt-5 max-w-sm text-[0.82rem] leading-relaxed text-echo-muted">
-            ECHO AI² is a public-data experiment: it reads a wallet&apos;s on-chain history and builds an AI counterpart
-            that makes different decisions from the same starting point.
+            ECHO AI² reads public wallet history returned by supported live chain indexers.
           </p>
           <p className="mt-5 flex items-start gap-2.5 text-[0.72rem] leading-relaxed text-echo-faint">
             <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-echo-cyan" />
@@ -43,9 +42,8 @@ export function Footer() {
         <div>
           <p className="kicker mb-5">Notice</p>
           <p className="text-[0.76rem] leading-relaxed text-echo-faint">
-            Wallet balances and activity are read from public chains. AI projections, portfolio curves and battle
-            results remain <span className="text-[#C7AEFF]">simulations</span>. Nothing here executes trades,
-            custodies assets, or constitutes financial advice. No project token exists.
+            Only public records returned by live chain services are displayed. Missing data remains unavailable rather
+            than being replaced with sample values. Nothing here executes trades, custodies assets, or constitutes financial advice.
           </p>
         </div>
       </div>
@@ -56,7 +54,7 @@ export function Footer() {
             ECHO AI² · v1.0 · AI Shadow Experiment
           </p>
           <p className="mono text-[0.66rem] uppercase tracking-[0.18em] text-echo-faint">
-            Humans vs AI · simulated
+            Public chain records · live indexer
           </p>
         </div>
       </div>

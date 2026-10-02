@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
-import { TimelineView } from '@/components/timeline/TimelineView';
+import { RealRecordsView } from '@/components/records/RealRecordsView';
 
 export const metadata: Metadata = {
-  title: 'Parallel Timeline',
-  description:
-    'Two wallets, one beginning. Replay the same window as you and as your AI Shadow — same start, different decisions.',
+  title: 'Real Wallet Timeline',
+  description: 'Read chronological public transactions returned by live chain indexers.',
 };
 
 export default function TimelinePage() {
-  return <TimelineView />;
+  return <RealRecordsView mode="timeline" />;
 }

@@ -1,5 +1,4 @@
-import { LEADERBOARD, WORLD_AI_EDGE, WORLD_SERIES, WORLD_STATS } from '@/data/demo';
-import { ok } from '@/lib/api';
+import { fail } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,17 +10,5 @@ export const dynamic = 'force-dynamic';
  * processed — the shape is already the one the world page consumes.
  */
 export async function GET() {
-  return ok({
-    stats: WORLD_STATS,
-    aiEdge: WORLD_AI_EDGE,
-    series: WORLD_SERIES,
-    leaderboard: LEADERBOARD,
-    totals: {
-      shadows: LEADERBOARD.length,
-      averageDifference:
-        Math.round(
-          (LEADERBOARD.reduce((sum, row) => sum + row.difference, 0) / Math.max(LEADERBOARD.length, 1)) * 10,
-        ) / 10,
-    },
-  });
+  return fail('wallet_unavailable', 'Global demo aggregates have been removed. Query a real public wallet address instead.');
 }

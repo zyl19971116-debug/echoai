@@ -24,7 +24,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-[#FF9C7A]/30 bg-[#FF9C7A]/[0.08]">
           <AlertTriangle className="h-5 w-5 text-[#FFB49A]" />
         </span>
-        <h1 className="display mt-6 text-[1.6rem] uppercase text-white">The simulation stumbled</h1>
+        <h1 className="display mt-6 text-[1.6rem] uppercase text-white">The live data request failed</h1>
         <p className="mx-auto mt-4 max-w-md text-[0.86rem] leading-relaxed text-echo-muted">
           Something failed while rendering this screen. No wallet data was affected — ECHO AI² never holds custody of
           anything.

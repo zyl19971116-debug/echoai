@@ -78,7 +78,7 @@ export function WalletModal({
         </p>
         <p className="mt-3 flex items-center gap-2 text-[0.66rem] uppercase tracking-[0.16em] text-echo-faint">
           <Sparkles className="h-3 w-3" />
-          Every projection on this site is simulated
+          Only records returned by live public-chain indexers are displayed
         </p>
       </div>
     </Modal>

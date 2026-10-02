@@ -16,6 +16,10 @@ export const dynamic = 'force-dynamic';
  * of the deterministic engine — the contract stays identical.
  */
 export async function GET(request: NextRequest, { params }: { params: { address: string } }) {
+  void request;
+  void params;
+  return fail('wallet_unavailable', 'Generated timelines and portfolio projections have been removed. Use the live transaction endpoint.');
+  /* Legacy generated analysis intentionally disabled.
   try {
     const requestedChain = Number(request.nextUrl.searchParams.get('chainId') ?? 1);
     const chainId = [1, 10, 56, 137, 8453, 42161, 4663].includes(requestedChain) ? requestedChain : 1;
@@ -32,4 +36,5 @@ export async function GET(request: NextRequest, { params }: { params: { address:
     if (error instanceof WalletError) return fail(error.code, error.message);
     return fail('analysis_failed', 'Shadow analysis failed. Please try again.');
   }
+  */
 }

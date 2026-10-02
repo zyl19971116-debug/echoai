@@ -89,7 +89,7 @@ export interface WalletTransactionPage {
   address: string;
   transactions: WalletTransaction[];
   nextCursor: string | null;
-  source: 'mock' | 'indexer';
+  source: 'indexer';
   pnlSummary: {
     profitUsd: number;
     lossUsd: number;
@@ -240,7 +240,7 @@ export interface ApiEnvelope<T> {
   data?: T;
   error?: ApiError;
   meta?: {
-    source: 'mock' | 'indexer';
+    source: 'indexer';
     generatedAt: string;
   };
 }
@@ -249,14 +249,14 @@ export interface ApiEnvelope<T> {
 /* Wallet connection                                                   */
 /* ------------------------------------------------------------------ */
 
-export type WalletKind = 'okx' | 'metamask' | 'phantom' | 'rainbow' | 'coinbase' | 'walletconnect' | 'demo';
+export type WalletKind = 'okx' | 'metamask' | 'phantom' | 'rainbow' | 'coinbase' | 'walletconnect';
 
 export type WalletStatus = 'disconnected' | 'connecting' | 'analyzing' | 'connected' | 'error';
 
 export interface WalletNetwork {
   chainId: number;
   name: string;
-  /** demo wallets are not backed by a live chain */
+  /** retained for persisted network compatibility; all supported wallets are live */
   simulated: boolean;
 }
 

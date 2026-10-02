@@ -8,9 +8,8 @@ import { Menu, X } from 'lucide-react';
 import { EchoLogo } from '@/components/ui/EchoLogo';
 import { WalletButton } from '@/components/wallet/WalletButton';
 import { useScrollY } from '@/hooks/useCountUp';
-import { WORLD_AI_EDGE, WORLD_STATS } from '@/data/demo';
 import { NAV_ITEMS } from '@/lib/navigation';
-import { cn, formatUsd } from '@/lib/format';
+import { cn } from '@/lib/format';
 
 export function Header() {
   const pathname = usePathname();
@@ -21,34 +20,6 @@ export function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-[100]">
-      {/* live status strip — reinforces that the world is running */}
-      <div className="hidden border-b border-white/[0.05] bg-void-900/80 backdrop-blur-md">
-        <div className="shell flex h-[30px] items-center justify-between">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.22em] text-echo-faint">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inset-0 animate-ping rounded-full bg-echo-cyan/70" />
-                <span className="relative h-1.5 w-1.5 rounded-full bg-echo-cyan" />
-              </span>
-              Echo world live
-            </span>
-            <span className="h-3 w-px bg-white/10" />
-            <span className="mono text-[0.62rem] text-echo-faint">
-              HUMANS <span className="text-white/75">{formatUsd(WORLD_STATS.humanValue, { compact: true })}</span>
-              <span className="mx-3 text-white/15">/</span>
-              AI SHADOWS <span className="text-[#C7AEFF]">{formatUsd(WORLD_STATS.aiValue, { compact: true })}</span>
-            </span>
-          </div>
-          <div className="flex items-center gap-4 text-[0.6rem] uppercase tracking-[0.22em]">
-            <span className="text-echo-faint">
-              {WORLD_STATS.humans.toLocaleString('en-US')} humans · {WORLD_STATS.shadows.toLocaleString('en-US')} shadows
-            </span>
-            <span className="h-3 w-px bg-white/10" />
-            <span className="text-[#C7AEFF]">AI +{WORLD_AI_EDGE}% ahead</span>
-          </div>
-        </div>
-      </div>
-
       <div
         className={cn(
           'relative transition-all duration-500 ease-echo',

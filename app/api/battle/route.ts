@@ -65,7 +65,7 @@ async function handle(request: NextRequest) {
     ]);
     if (left.profile.isEmpty || right.profile.isEmpty) return fail('empty_wallet', 'Both wallets need public on-chain history before they can be simulated.');
     const days = parseDays(String(payload.days ?? 30) as string | null);
-    const source = left.source === 'indexer' && right.source === 'indexer' ? 'indexer' : 'mock';
+    const source = 'indexer' as const;
     return ok({ ...simulateBattle(left.profile, right.profile, days), dataSource: source, chainOne, chainTwo }, undefined, source);
   } catch (error) {
     if (error instanceof WalletError) return fail(error.code, error.message);
@@ -74,9 +74,11 @@ async function handle(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  return handle(request);
+  void request;
+  return fail('wallet_unavailable', 'Generated battle results have been removed. Only real public-chain records are available.');
 }
 
 export async function GET(request: NextRequest) {
-  return handle(request);
+  void request;
+  return fail('wallet_unavailable', 'Generated battle results have been removed. Only real public-chain records are available.');
 }
