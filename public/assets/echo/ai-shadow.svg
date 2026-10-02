@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" role="img" aria-label="AI Shadow holographic silhouette">
+  <defs>
+    <linearGradient id="a-line" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3BE8FF" stop-opacity="0.95"/>
+      <stop offset="48%" stop-color="#6E8BFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#9B6BFF" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="a-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3A2A7A" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#1A1440" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0A0C22" stop-opacity="0.1"/>
+    </linearGradient>
+    <radialGradient id="a-halo" cx="50%" cy="40%" r="58%">
+      <stop offset="0%" stop-color="#6C42D6" stop-opacity="0.5"/>
+      <stop offset="60%" stop-color="#3A62D6" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#3A62D6" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="a-soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <clipPath id="a-clip">
+      <path d="M300 232c62 0 108 46 108 112 0 44-16 80-42 100l48 22c86 26 140 108 150 234H136c10-126 64-208 150-234l48-22c-26-20-42-56-42-100 0-66 46-112 108-112z"/>
+    </clipPath>
+  </defs>
+
+  <rect width="600" height="800" fill="#04060F"/>
+  <circle cx="300" cy="330" r="300" fill="url(#a-halo)"/>
+
+  <!-- concentric containment rings -->
+  <g fill="none" stroke="url(#a-line)" opacity="0.3">
+    <circle cx="300" cy="350" r="242" stroke-width="0.7"/>
+    <circle cx="300" cy="350" r="196" stroke-width="0.7" stroke-dasharray="2 8"/>
+    <circle cx="300" cy="350" r="150" stroke-width="0.6" stroke-dasharray="1 6"/>
+  </g>
+
+  <!-- holographic fill -->
+  <path d="M300 232c62 0 108 46 108 112 0 44-16 80-42 100l48 22c86 26 140 108 150 234H136c10-126 64-208 150-234l48-22c-26-20-42-56-42-100 0-66 46-112 108-112z" fill="url(#a-fill)"/>
+
+  <!-- wireframe outline -->
+  <path d="M300 232c62 0 108 46 108 112 0 44-16 80-42 100l48 22c86 26 140 108 150 234H136c10-126 64-208 150-234l48-22c-26-20-42-56-42-100 0-66 46-112 108-112z" fill="none" stroke="url(#a-line)" stroke-width="1.9" opacity="0.9"/>
+  <path d="M300 232c62 0 108 46 108 112 0 44-16 80-42 100l48 22c86 26 140 108 150 234H136c10-126 64-208 150-234l48-22c-26-20-42-56-42-100 0-66 46-112 108-112z" fill="none" stroke="url(#a-line)" stroke-width="4" opacity="0.5" filter="url(#a-soft)"/>
+
+  <!-- internal scan lines -->
+  <g clip-path="url(#a-clip)" opacity="0.5">
+    <g stroke="#7FE6FF" stroke-width="0.7" stroke-opacity="0.5">
+      <line x1="100" x2="500" y1="262" y2="262"/><line x1="100" x2="500" y1="298" y2="298"/>
+      <line x1="100" x2="500" y1="334" y2="334"/><line x1="100" x2="500" y1="370" y2="370"/>
+      <line x1="100" x2="500" y1="406" y2="406"/><line x1="100" x2="500" y1="442" y2="442"/>
+      <line x1="100" x2="500" y1="478" y2="478"/><line x1="100" x2="500" y1="514" y2="514"/>
+      <line x1="100" x2="500" y1="550" y2="550"/><line x1="100" x2="500" y1="586" y2="586"/>
+      <line x1="100" x2="500" y1="622" y2="622"/><line x1="100" x2="500" y1="658" y2="658"/>
+      <line x1="100" x2="500" y1="694" y2="694"/><line x1="100" x2="500" y1="730" y2="730"/>
+    </g>
+  </g>
+
+  <!-- node points -->
+  <g fill="#9B6BFF">
+    <circle cx="300" cy="238" r="2.6"/>
+    <circle cx="192" cy="344" r="2"/>
+    <circle cx="408" cy="344" r="2"/>
+    <circle cx="136" cy="700" r="2"/>
+    <circle cx="464" cy="700" r="2"/>
+    <circle cx="300" cy="466" r="2.4" fill="#3BE8FF"/>
+    <circle cx="300" cy="560" r="2" fill="#3BE8FF"/>
+  </g>
+
+  <!-- particles -->
+  <g fill="#8FD8FF" opacity="0.75">
+    <circle cx="150" cy="300" r="1.6"/><circle cx="452" cy="286" r="1.3"/>
+    <circle cx="196" cy="470" r="1.1"/><circle cx="418" cy="500" r="1.7"/>
+    <circle cx="252" cy="180" r="1.2"/><circle cx="356" cy="160" r="1.5"/>
+    <circle cx="112" cy="600" r="1.4"/><circle cx="492" cy="620" r="1.2"/>
+    <circle cx="286" cy="768" r="1.6"/><circle cx="330" cy="742" r="1.1"/>
+    <circle cx="78" cy="452" r="1.3"/><circle cx="524" cy="420" r="1.5"/>
+  </g>
+
+  <!-- ground glow -->
+  <ellipse cx="300" cy="772" rx="230" ry="20" fill="#9B6BFF" opacity="0.22" filter="url(#a-soft)"/>
+</svg>
