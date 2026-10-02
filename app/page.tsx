@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { PageShell } from '@/components/layout/PageShell';
 import { Hero } from '@/components/home/Hero';
-import { EchoWorldPanel } from '@/components/home/EchoWorldPanel';
 import { FeatureCards } from '@/components/home/FeatureCards';
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export default function HomePage() {
   return (
     <PageShell wide className="overflow-hidden pb-12">
       <Hero />
-      <EchoWorldPanel />
       <FeatureCards />
     </PageShell>
   );
