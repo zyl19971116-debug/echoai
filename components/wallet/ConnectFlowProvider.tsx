@@ -43,9 +43,7 @@ export function ConnectFlowProvider({ children }: { children: ReactNode }) {
       }
     },
     [connect],
-  );
-
-  const open = useCallback(
+  );  const open = useCallback(
     (kind?: WalletKind) => {
       clearError();
       if (kind) {

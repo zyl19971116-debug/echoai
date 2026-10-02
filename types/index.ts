@@ -148,35 +148,6 @@ export interface TimelineEvent {
 export type RangeKey = '7D' | '30D' | '90D' | '1Y' | 'ALL';
 
 /* ------------------------------------------------------------------ */
-/* World                                                               */
-/* ------------------------------------------------------------------ */
-
-export interface WorldStats {
-  humans: number;
-  shadows: number;
-  humanValue: number;
-  aiValue: number;
-  humanChange: number;
-  aiChange: number;
-}
-
-export interface LeaderboardRow {
-  rank: number;
-  shadow: string;
-  archetype: Archetype;
-  human: number;
-  ai: number;
-  difference: number;
-  days: number;
-}
-
-export interface WorldSeriesPoint {
-  label: string;
-  human: number;
-  ai: number;
-}
-
-/* ------------------------------------------------------------------ */
 /* Battle                                                              */
 /* ------------------------------------------------------------------ */
 

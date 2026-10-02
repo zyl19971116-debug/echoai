@@ -12,6 +12,7 @@ import {
 } from 'react';
 import type { ApiError, WalletKind, WalletNetwork, WalletState } from '@/types';
 import { isValidAddress } from '@/lib/walletAnalysis';
+import { recordShadowWallet } from '@/lib/shadowRegistry';
 
 const STORAGE_KEY = 'echo-ai:wallet:v1';
 
@@ -212,6 +213,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
           network: restoredNetwork,
           error: null,
         });
+        // Restored sessions are real connections too — keep the registry accurate.
+        recordShadowWallet(parsed.address);
         if (parsed.kind !== 'phantom') {
           const provider = getProvider(parsed.kind, announcedProviders.current);
           void provider?.request({ method: 'eth_chainId' }).then((rawChain) => {

@@ -3,12 +3,11 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { GlowButton } from '@/components/ui/GlowButton';
-import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
-import { AvatarStack } from '@/components/ui/AvatarStack';
 import { Badge } from '@/components/ui/Badge';
+import { AvatarStack } from '@/components/ui/AvatarStack';
 import { HeroVisual } from './HeroVisual';
 import { useConnectFlow } from '@/hooks/useConnectFlow';
-import { HERO_SOCIAL_PROOF } from '@/data/demo';
+import { useShadowCount } from '@/hooks/useShadowCount';
 
 const container = {
   hidden: {},
@@ -27,6 +26,11 @@ const item = {
 
 export function Hero() {
   const { open } = useConnectFlow();
+  const shadowCount = useShadowCount();
+
+  /** Shown when nothing has connected yet — no seeded baseline, no fake crowd. */
+  const emptyCountLabel =
+    'No AI Shadows created yet — connect a wallet and yours is the first';
 
   return (
     <section className="echo-hero relative overflow-hidden">
@@ -66,17 +70,26 @@ export function Hero() {
             </GlowButton>
           </motion.div>
 
-          <motion.div variants={item} className="mt-6 flex flex-wrap items-center gap-4">
-            <AvatarStack count={5} seed="echo-ai-social" />
-            <p className="text-[0.8rem] leading-snug text-echo-muted">
-              <AnimatedNumber value={HERO_SOCIAL_PROOF.count} className="font-semibold text-white" duration={1800} />{' '}
-              people have created their AI Shadow
+          <motion.div variants={item} className="mt-6 flex items-center gap-3.5">
+            <AvatarStack count={Math.min(Math.max(shadowCount, 1), 5)} seed="echo-live" />
+            <p className="max-w-[340px] text-[0.76rem] leading-relaxed text-echo-muted">
+              {shadowCount === 0 ? (
+                emptyCountLabel
+              ) : (
+                <>
+                  <span className="font-semibold text-white">{shadowCount}</span>
+                  {' '}
+                  {shadowCount === 1
+                    ? 'wallet connected here has created its AI Shadow'
+                    : 'wallets connected here have created their AI Shadows'}
+                </>
+              )}
             </p>
           </motion.div>
 
           <motion.p variants={item} className="mt-5 flex items-center gap-2 text-[0.66rem] uppercase tracking-[0.18em] text-echo-faint">
             <span className="h-1 w-1 rounded-full bg-echo-cyan" />
-            Public on-chain data only · Simulated results · No custody
+            Real connected-wallet data only · AI analysis is simulated · No custody
           </motion.p>
         </motion.div>
 

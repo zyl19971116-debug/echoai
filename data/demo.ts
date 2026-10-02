@@ -1,12 +1,5 @@
-import type {
-  Archetype,
-  LeaderboardRow,
-  PortfolioPoint,
-  TimelineEvent,
-  WorldSeriesPoint,
-  WorldStats,
-} from '@/types';
-import { addressFromSeed, createRng, hashString, roundTo } from '@/lib/seed';
+import type { Archetype, PortfolioPoint, TimelineEvent } from '@/types';
+import { addressFromSeed } from '@/lib/seed';
 import { analyzeWallet } from '@/lib/walletAnalysis';
 import { SIMULATION_START_VALUE, buildPortfolioSeries, generateShadow, simulateBattle } from '@/lib/shadowEngine';
 
@@ -60,97 +53,6 @@ export const DEMO_WALLETS: { name: string; address: string }[] = CODENAMES.map((
 }));
 
 export const DEMO_ADDRESSES: string[] = DEMO_WALLETS.map((w) => w.address);
-
-/* ------------------------------------------------------------------ */
-/* Social proof                                                        */
-/* ------------------------------------------------------------------ */
-
-export const HERO_SOCIAL_PROOF = {
-  count: 8291,
-  label: 'people have created their AI Shadow',
-};
-
-/* ------------------------------------------------------------------ */
-/* Global world statistics (MOCK)                                      */
-/* ------------------------------------------------------------------ */
-
-export const WORLD_STATS: WorldStats = {
-  humans: 8291,
-  shadows: 8291,
-  humanValue: 18_400_000,
-  aiValue: 21_700_000,
-  humanChange: 12.3,
-  aiChange: 17.9,
-};
-
-export const WORLD_AI_EDGE = roundTo(WORLD_STATS.aiChange - WORLD_STATS.humanChange, 1);
-
-/**
- * Smooth deterministic path with fixed endpoints — used for the public
- * "ECHO WORLD" chart. Values are in USD.
- */
-function buildWorldPath(start: number, end: number, points: number, salt: string): number[] {
-  const rng = createRng(hashString(salt));
-  const out: number[] = [start];
-  const spread = end - start;
-
-  for (let i = 1; i <= points; i += 1) {
-    const t = i / points;
-    const trend = start + spread * t;
-    const noise = (rng() * 2 - 1) * Math.abs(spread) * 0.34 * Math.sin(Math.PI * t);
-    out.push(Math.max(0, roundTo(trend + noise, 0)));
-  }
-
-  out[points] = end;
-  return out;
-}
-
-const WORLD_POINTS = 30;
-
-export const WORLD_SERIES: WorldSeriesPoint[] = (() => {
-  const humanStart = WORLD_STATS.humanValue / (1 + WORLD_STATS.humanChange / 100);
-  const aiStart = WORLD_STATS.aiValue / (1 + WORLD_STATS.aiChange / 100);
-  const human = buildWorldPath(humanStart, WORLD_STATS.humanValue, WORLD_POINTS, 'echo:world:human');
-  const ai = buildWorldPath(aiStart, WORLD_STATS.aiValue, WORLD_POINTS, 'echo:world:ai');
-
-  return human.map((h, i) => ({
-    label: `D${i + 1}`,
-    human: h,
-    ai: ai[i],
-  }));
-})();
-
-/* ------------------------------------------------------------------ */
-/* Leaderboard (20 shadows)                                            */
-/* ------------------------------------------------------------------ */
-
-export interface LeaderboardEntry extends LeaderboardRow {
-  address: string;
-}
-
-function leaderboardFor(days: number): LeaderboardEntry[] {
-  return DEMO_WALLETS.map(({ name, address }) => {
-    const profile = analyzeWallet(address);
-    const shadow = generateShadow(profile);
-    const series = buildPortfolioSeries(profile, shadow, days);
-    const last = series[series.length - 1];
-
-    return {
-      rank: 0,
-      shadow: `${shadow.name} · ${name}`,
-      archetype: shadow.archetype,
-      human: last.human,
-      ai: last.ai,
-      difference: roundTo((last.ai / last.human - 1) * 100, 1),
-      days,
-      address,
-    };
-  })
-    .sort((a, b) => b.difference - a.difference)
-    .map((row, index) => ({ ...row, rank: index + 1 }));
-}
-
-export const LEADERBOARD: LeaderboardEntry[] = leaderboardFor(90);
 
 /* ------------------------------------------------------------------ */
 /* Portfolio histories                                                 */
