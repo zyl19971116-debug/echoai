@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import type { TransactionChain, WalletTransaction, WalletTransactionPage } from '@/types';
 import { hasAlchemyConfig, getTransferPage, getAlchemyApiKey, getTokenMetadata, type TokenMetadata } from './alchemy';
 import { TRANSACTION_CHAINS, validateChainAddress } from '@/lib/chains';
@@ -119,39 +118,8 @@ async function solanaPage(address: string, cursor: string | null, limit: number)
   };
 }
 
-function demoPage(address: string, chain: TransactionChain, cursor: string | null, limit: number): WalletTransactionPage {
-  const page = decodeCursor<{ page: number }>(cursor)?.page ?? 0;
-  const total = 47;
-  const start = page * limit;
-  const count = Math.max(0, Math.min(limit, total - start));
-  const assets: Record<TransactionChain, string[]> = {
-    eth: ['ETH', 'USDC', 'WETH'], bsc: ['BNB', 'USDT', 'CAKE'], base: ['ETH', 'USDC', 'AERO'],
-    arb: ['ETH', 'ARB', 'USDC'], rb: ['ETH', 'USDC', 'RWA'], polygon: ['POL', 'USDC', 'WETH'], optimism: ['ETH', 'OP', 'USDC'], sol: ['SOL', 'USDC', 'JUP'],
-  };
-  const transactions: WalletTransaction[] = Array.from({ length: count }, (_, offset) => {
-    const index = start + offset;
-    const digest = createHash('sha256').update(`${address}:${chain}:${index}`).digest('hex');
-    const incoming = Number.parseInt(digest.slice(0, 2), 16) % 2 === 0;
-    const peer = chain === 'sol' ? digest.slice(0, 44) : `0x${digest.slice(0, 40)}`;
-    const hash = chain === 'sol' ? `${digest}${digest.slice(0, 24)}` : `0x${digest}${digest}`;
-    const asset = assets[chain][index % assets[chain].length];
-    const value = Number(((Number.parseInt(digest.slice(2, 8), 16) % 250000) / 1000).toFixed(3));
-    const usdRates: Record<string, number> = { ETH: 2650, WETH: 2650, USDC: 1, USDT: 1, BNB: 610, CAKE: 2.7, AERO: 0.82, ARB: 0.75, RWA: 1.25, POL: 0.42, OP: 1.65, SOL: 155, JUP: 0.88 };
-    const usdValue = value * (usdRates[asset] ?? 1);
-    const pnlPercent = Number((((Number.parseInt(digest.slice(8, 12), 16) % 7001) - 3000) / 100).toFixed(2));
-    const pnlUsd = Number((usdValue * pnlPercent / 100).toFixed(2));
-    return {
-      id: `${chain}-${index}`, chain, hash, from: incoming ? peer : address, to: incoming ? address : peer,
-      asset, tokenName: tokenName(asset), value, usdValue: Number(usdValue.toFixed(2)), pnlUsd, pnlPercent,
-      category: index % 5 === 0 ? 'erc721' : 'transfer', timestamp: new Date(Date.UTC(2026, 8, 30 - index, 12, 0)).toISOString(),
-      direction: incoming ? 'in' as const : 'out' as const,
-    };
-  });
-  return { chain, address, transactions, nextCursor: start + count < total ? encodeCursor({ page: page + 1 }) : null, source: 'mock', pnlSummary: pnlSummary(transactions) };
-}
-
 export async function getWalletTransactionPage(address: string, chain: TransactionChain, cursor: string | null, limit: number) {
   if (!validateChainAddress(address, chain)) throw new Error(`Invalid ${TRANSACTION_CHAINS[chain].label} address`);
-  if (!hasAlchemyConfig()) return demoPage(address, chain, cursor, limit);
+  if (!hasAlchemyConfig()) throw new Error('Live indexing is unavailable. No demo transactions will be generated.');
   return chain === 'sol' ? solanaPage(address, cursor, limit) : evmPage(address, chain, cursor, limit);
 }
