@@ -3,6 +3,8 @@ import { WalletError } from '@/lib/walletAnalysis';
 import { simulateBattle } from '@/lib/shadowEngine';
 import { fail, ok, parseDays } from '@/lib/api';
 import { getWalletProfile } from '@/lib/onchain/walletService';
+import { isTransactionChain, TRANSACTION_CHAINS } from '@/lib/chains';
+import type { TransactionChain } from '@/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,6 +12,8 @@ interface BattlePayload {
   one?: string;
   two?: string;
   days?: number;
+  chainOne?: TransactionChain;
+  chainTwo?: TransactionChain;
 }
 
 async function readPayload(request: NextRequest): Promise<BattlePayload> {
@@ -25,6 +29,8 @@ async function readPayload(request: NextRequest): Promise<BattlePayload> {
     one: params.get('one') ?? undefined,
     two: params.get('two') ?? undefined,
     days: parseDays(params.get('days')),
+    chainOne: (params.get('chainOne') ?? undefined) as TransactionChain | undefined,
+    chainTwo: (params.get('chainTwo') ?? undefined) as TransactionChain | undefined,
   };
 }
 
@@ -46,12 +52,21 @@ async function handle(request: NextRequest) {
     return fail('bad_request', 'A Shadow cannot battle itself — pick two different wallets.');
   }
 
+  const chainOne = payload.chainOne ?? 'eth';
+  const chainTwo = payload.chainTwo ?? 'eth';
+  if (!isTransactionChain(chainOne) || !isTransactionChain(chainTwo) || chainOne === 'sol' || chainTwo === 'sol') {
+    return fail('unsupported_network', 'Battle currently supports the listed EVM networks.');
+  }
+
   try {
-    const [left, right] = await Promise.all([getWalletProfile(payload.one), getWalletProfile(payload.two)]);
+    const [left, right] = await Promise.all([
+      getWalletProfile(payload.one, TRANSACTION_CHAINS[chainOne].chainId),
+      getWalletProfile(payload.two, TRANSACTION_CHAINS[chainTwo].chainId),
+    ]);
     if (left.profile.isEmpty || right.profile.isEmpty) return fail('empty_wallet', 'Both wallets need public on-chain history before they can be simulated.');
     const days = parseDays(String(payload.days ?? 30) as string | null);
     const source = left.source === 'indexer' && right.source === 'indexer' ? 'indexer' : 'mock';
-    return ok({ ...simulateBattle(left.profile, right.profile, days), dataSource: source }, undefined, source);
+    return ok({ ...simulateBattle(left.profile, right.profile, days), dataSource: source, chainOne, chainTwo }, undefined, source);
   } catch (error) {
     if (error instanceof WalletError) return fail(error.code, error.message);
     return fail('analysis_failed', 'Battle analysis failed. Please try again.');

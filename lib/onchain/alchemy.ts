@@ -134,13 +134,13 @@ async function transferDirection(address: string, direction: 'fromAddress' | 'to
   const output: AssetTransfer[] = [];
   let pageKey: string | undefined;
 
-  for (let page = 0; page < 5; page += 1) {
+  for (let page = 0; page < 3; page += 1) {
     const options: Record<string, unknown> = {
       fromBlock: '0x0',
       toBlock: 'latest',
       withMetadata: true,
       excludeZeroValue: false,
-      maxCount: '0x3e8',
+      maxCount: '0xfa',
       category: transferCategories(chainId),
       [direction]: address,
     };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertTriangle, Loader2, RefreshCw, Swords, Trophy } from 'lucide-react';
 import { PageShell } from '@/components/layout/PageShell';
@@ -9,13 +9,22 @@ import { Badge, SimulationBadge } from '@/components/ui/Badge';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { BattleChart } from '@/components/charts/BattleChart';
 import { ShareCard } from '@/components/share/ShareCard';
-import { BATTLE_SHOWCASE, BATTLE_TIME_OPTIONS, DEMO_WALLET } from '@/data/demo';
+import { BATTLE_TIME_OPTIONS } from '@/data/demo';
 import { isValidAddress, shortAddress } from '@/lib/walletAnalysis';
 import { ARCHETYPE_META } from '@/lib/archetypes';
 import { cn, formatSignedPercent, formatUsd } from '@/lib/format';
-import type { ApiEnvelope, BattleResult, BattleSideResult } from '@/types';
+import type { ApiEnvelope, BattleResult, BattleSideResult, TransactionChain } from '@/types';
+import { TRANSACTION_CHAINS } from '@/lib/chains';
+import { useWallet } from '@/hooks/useWallet';
 
-type BattleViewResult = BattleResult & { dataSource?: 'mock' | 'indexer' };
+type BattleViewResult = BattleResult & { dataSource?: 'mock' | 'indexer'; chainOne?: TransactionChain; chainTwo?: TransactionChain };
+
+const EVM_CHAINS = (Object.entries(TRANSACTION_CHAINS) as Array<[TransactionChain, (typeof TRANSACTION_CHAINS)[TransactionChain]]>)
+  .filter(([, item]) => item.address === 'evm');
+
+function chainFromId(chainId?: number): TransactionChain {
+  return EVM_CHAINS.find(([, item]) => item.chainId === chainId)?.[0] ?? 'eth';
+}
 
 interface BattleViewProps {
   initialOne?: string;
@@ -23,21 +32,29 @@ interface BattleViewProps {
 }
 
 export function BattleView({ initialOne, initialTwo }: BattleViewProps) {
-  const [one, setOne] = useState(initialOne ?? DEMO_WALLET);
-  const [two, setTwo] = useState(initialTwo ?? BATTLE_SHOWCASE.right.address);
+  const { address, network } = useWallet();
+  const [one, setOne] = useState(initialOne ?? '');
+  const [two, setTwo] = useState(initialTwo ?? '');
+  const [chainOne, setChainOne] = useState<TransactionChain>('eth');
+  const [chainTwo, setChainTwo] = useState<TransactionChain>('eth');
   const [days, setDays] = useState<number>(30);
-  const [result, setResult] = useState<BattleViewResult | null>({ ...BATTLE_SHOWCASE, dataSource: 'mock' });
+  const [result, setResult] = useState<BattleViewResult | null>(null);
   const [generating, setGenerating] = useState(false);
   const [errors, setErrors] = useState<{ one?: string; two?: string }>({});
 
-  const recompute = async (nextDays: number, nextOne: string, nextTwo: string) => {
+  useEffect(() => {
+    if (address && !initialOne) setOne((current) => current || address);
+    if (network?.chainId && !initialOne) setChainOne(chainFromId(network.chainId));
+  }, [address, network?.chainId, initialOne]);
+
+  const recompute = async (nextDays: number, nextOne: string, nextTwo: string, nextChainOne: TransactionChain, nextChainTwo: TransactionChain) => {
     setGenerating(true);
     setErrors({});
     try {
       const response = await fetch('/api/battle', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ one: nextOne, two: nextTwo, days: nextDays }),
+        body: JSON.stringify({ one: nextOne, two: nextTwo, days: nextDays, chainOne: nextChainOne, chainTwo: nextChainTwo }),
       });
       const body = (await response.json()) as ApiEnvelope<BattleViewResult>;
       if (!body.ok || !body.data) throw new Error(body.error?.message ?? 'Battle analysis failed.');
@@ -60,13 +77,13 @@ export function BattleView({ initialOne, initialTwo }: BattleViewProps) {
     }
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
-    await recompute(days, one, two);
+    await recompute(days, one, two, chainOne, chainTwo);
   };
 
   const handleRangeChange = async (nextDays: number) => {
     setDays(nextDays);
     if (result) {
-      await recompute(nextDays, result.left.address, result.right.address);
+      await recompute(nextDays, result.left.address, result.right.address, result.chainOne ?? chainOne, result.chainTwo ?? chainTwo);
     }
   };
 
@@ -85,9 +102,7 @@ export function BattleView({ initialOne, initialTwo }: BattleViewProps) {
             Shadow battle
           </Badge>
           <SimulationBadge />
-          <Badge tone={result?.dataSource === 'indexer' ? 'cyan' : 'neutral'}>
-            {result?.dataSource === 'indexer' ? 'Live wallet profiles' : 'Demo wallet profiles'}
-          </Badge>
+          <Badge tone="cyan">Live wallet profiles</Badge>
         </div>
 
         <h1 className="display max-w-3xl text-[2.4rem] uppercase text-white sm:text-[3.2rem] lg:text-[3.9rem]">
@@ -113,8 +128,11 @@ export function BattleView({ initialOne, initialTwo }: BattleViewProps) {
             error={errors.one}
             onChange={(value) => {
               setOne(value);
+              setResult(null);
               if (errors.one) setErrors((prev) => ({ ...prev, one: undefined }));
             }}
+            chain={chainOne}
+            onChainChange={(value) => { setChainOne(value); setResult(null); }}
           />
 
           <div className="hidden h-11 items-center justify-center lg:flex">
@@ -129,8 +147,11 @@ export function BattleView({ initialOne, initialTwo }: BattleViewProps) {
             error={errors.two}
             onChange={(value) => {
               setTwo(value);
+              setResult(null);
               if (errors.two) setErrors((prev) => ({ ...prev, two: undefined }));
             }}
+            chain={chainTwo}
+            onChainChange={(value) => { setChainTwo(value); setResult(null); }}
           />
         </div>
 
@@ -148,10 +169,13 @@ export function BattleView({ initialOne, initialTwo }: BattleViewProps) {
               size="md"
               variant="ghost"
               onClick={() => {
-                setOne(DEMO_WALLET);
-                setTwo(BATTLE_SHOWCASE.right.address);
+                setOne(address ?? '');
+                setTwo('');
+                setChainOne(chainFromId(network?.chainId));
+                setChainTwo('eth');
                 setDays(30);
-                void recompute(30, DEMO_WALLET, BATTLE_SHOWCASE.right.address);
+                setResult(null);
+                setErrors({});
               }}
               icon={<RefreshCw className="h-3.5 w-3.5" />}
             >
@@ -181,7 +205,7 @@ export function BattleView({ initialOne, initialTwo }: BattleViewProps) {
         </div>
 
         <p className="mt-5 text-[0.68rem] uppercase tracking-[0.16em] text-echo-faint">
-          Read-only analysis · no signature · no transaction · demo default values
+          Real public-chain profiles · read-only · no signature · no transaction · battle performance is simulated
         </p>
       </Panel>
 
@@ -296,6 +320,8 @@ function WalletField({
   value,
   onChange,
   error,
+  chain,
+  onChainChange,
 }: {
   id: string;
   label: string;
@@ -303,6 +329,8 @@ function WalletField({
   value: string;
   onChange: (value: string) => void;
   error?: string;
+  chain: TransactionChain;
+  onChainChange: (chain: TransactionChain) => void;
 }) {
   return (
     <div>
@@ -315,22 +343,28 @@ function WalletField({
       >
         {label}
       </label>
-      <input
-        id={id}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        spellCheck={false}
-        autoComplete="off"
-        placeholder="0x..."
-        className={cn(
-          'mono mt-2.5 h-11 w-full rounded-sm border bg-void-800/60 px-3.5 text-[0.76rem] text-white outline-none transition-colors duration-300',
-          error
-            ? 'border-[#FF9C7A]/50'
-            : tone === 'violet'
-              ? 'border-white/[0.09] focus:border-echo-violet/60'
-              : 'border-white/[0.09] focus:border-echo-blue/60',
-        )}
-      />
+      <div className="mt-2.5 grid grid-cols-[132px_1fr] gap-2">
+        <select value={chain} onChange={(event) => onChainChange(event.target.value as TransactionChain)}
+          className="h-11 rounded-sm border border-white/[0.09] bg-void-800/90 px-3 text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-white outline-none focus:border-echo-blue/50">
+          {EVM_CHAINS.map(([id, item]) => <option key={id} value={id}>{item.label}</option>)}
+        </select>
+        <input
+          id={id}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          spellCheck={false}
+          autoComplete="off"
+          placeholder="0x..."
+          className={cn(
+            'mono h-11 w-full rounded-sm border bg-void-800/60 px-3.5 text-[0.76rem] text-white outline-none transition-colors duration-300',
+            error
+              ? 'border-[#FF9C7A]/50'
+              : tone === 'violet'
+                ? 'border-white/[0.09] focus:border-echo-violet/60'
+                : 'border-white/[0.09] focus:border-echo-blue/60',
+          )}
+        />
+      </div>
       {error ? (
         <p className="mt-2 flex items-center gap-1.5 text-[0.68rem] text-[#FFB49A]">
           <AlertTriangle className="h-3 w-3" />
