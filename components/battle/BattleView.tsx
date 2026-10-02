@@ -112,7 +112,7 @@ export function BattleView({ initialOne, initialTwo }: BattleViewProps) {
           Any wallet. Any shadow.
         </p>
         <p className="max-w-2xl text-[0.92rem] leading-relaxed text-echo-muted">
-          Paste two public addresses. ECHO AI builds both Shadows, replays the same window for each, and shows which
+          Paste two public addresses. ECHO AI² builds both Shadows, replays the same window for each, and shows which
           decision model came out ahead.
         </p>
       </div>

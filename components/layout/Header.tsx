@@ -66,7 +66,7 @@ export function Header() {
         </div>
 
         <div className="shell relative flex h-[62px] items-center justify-between gap-4 md:h-[68px]">
-          <Link href="/" className="group flex shrink-0 items-center" aria-label="ECHO AI home">
+          <Link href="/" className="group flex shrink-0 items-center" aria-label="ECHO AI² home">
             <EchoLogo className="transition-opacity duration-300 group-hover:opacity-85" />
           </Link>
 

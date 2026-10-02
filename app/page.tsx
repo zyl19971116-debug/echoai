@@ -5,9 +5,9 @@ import { EchoWorldPanel } from '@/components/home/EchoWorldPanel';
 import { FeatureCards } from '@/components/home/FeatureCards';
 
 export const metadata: Metadata = {
-  title: 'ECHO AI — What if your wallet had another life?',
+  title: 'ECHO AI² — What if your wallet had another life?',
   description:
-    'ECHO AI reads a wallet’s public on-chain history and generates an AI Shadow that makes different decisions from the same starting point. Humans vs AI — a simulation experiment.',
+    'ECHO AI² reads a wallet’s public on-chain history and generates an AI Shadow that makes different decisions from the same starting point. Humans vs AI — a simulation experiment.',
 };
 
 export default function HomePage() {

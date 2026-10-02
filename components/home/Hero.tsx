@@ -51,7 +51,7 @@ export function Hero() {
           </motion.h1>
 
           <motion.p variants={item} className="mt-5 max-w-[510px] text-[0.92rem] leading-relaxed text-echo-muted">
-            ECHO AI reads your on-chain history and creates an AI version of you.
+            ECHO AI² reads your on-chain history and creates an AI version of you.
             <br className="hidden sm:block" /> A parallel wallet. A parallel life.
             <span className="text-white/90"> Same start. Different choices.</span> Who will do better?
           </motion.p>

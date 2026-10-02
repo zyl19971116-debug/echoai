@@ -95,7 +95,7 @@ function buildSummary(profile: WalletProfile, archetype: Archetype): string {
  */
 export function generatePersonality(profile: WalletProfile, a: ShadowAttributes): string {
   if (profile.isEmpty) {
-    return 'No public on-chain history was found for this address. ECHO AI needs at least a handful of transactions before it can build a behaviour model that means anything.';
+    return 'No public on-chain history was found for this address. ECHO AI² needs at least a handful of transactions before it can build a behaviour model that means anything.';
   }
 
   const sentences: string[] = [];

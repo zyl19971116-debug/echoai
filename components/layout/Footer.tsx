@@ -14,7 +14,7 @@ export function Footer() {
         <div>
           <EchoLogo />
           <p className="mt-5 max-w-sm text-[0.82rem] leading-relaxed text-echo-muted">
-            ECHO AI is a public-data experiment: it reads a wallet&apos;s on-chain history and builds an AI counterpart
+            ECHO AI² is a public-data experiment: it reads a wallet&apos;s on-chain history and builds an AI counterpart
             that makes different decisions from the same starting point.
           </p>
           <p className="mt-5 flex items-start gap-2.5 text-[0.72rem] leading-relaxed text-echo-faint">
@@ -53,7 +53,7 @@ export function Footer() {
       <div className="border-t border-white/[0.06] py-5">
         <div className="shell flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
           <p className="mono text-[0.66rem] uppercase tracking-[0.18em] text-echo-faint">
-            ECHO AI · v1.0 · AI Shadow Experiment
+            ECHO AI² · v1.0 · AI Shadow Experiment
           </p>
           <p className="mono text-[0.66rem] uppercase tracking-[0.18em] text-echo-faint">
             Humans vs AI · simulated

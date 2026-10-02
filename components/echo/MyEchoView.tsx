@@ -306,7 +306,7 @@ export function MyEchoView() {
           <Link href="/battle" className="text-echo-muted underline decoration-white/20 underline-offset-4 hover:text-white">
             Paste any wallet address
           </Link>{' '}
-          and ECHO AI will generate its counterpart instantly.
+          and ECHO AI² will generate its counterpart instantly.
         </p>
       </section>
     </PageShell>

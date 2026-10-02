@@ -2,7 +2,7 @@
   "name": "echo-ai",
   "version": "1.0.0",
   "private": true,
-  "description": "ECHO AI — What if your wallet had another life? AI Shadow simulator for public on-chain data.",
+  "description": "ECHO AI² — What if your wallet had another life? AI Shadow simulator for public on-chain data.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

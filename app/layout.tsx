@@ -8,13 +8,13 @@ import { GridBackdrop } from '@/components/ui/Backdrop';
 export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
   title: {
-    default: 'ECHO AI — What if your wallet had another life?',
-    template: '%s · ECHO AI',
+    default: 'ECHO AI² — What if your wallet had another life?',
+    template: '%s · ECHO AI²',
   },
   description:
-    'ECHO AI reads a wallet’s public on-chain history and generates an AI Shadow that makes different decisions from the same starting point. Humans vs AI — a real-time simulation experiment.',
+    'ECHO AI² reads a wallet’s public on-chain history and generates an AI Shadow that makes different decisions from the same starting point. Humans vs AI — a real-time simulation experiment.',
   keywords: [
-    'ECHO AI',
+    'ECHO AI²',
     'AI Shadow',
     'Web3 AI',
     'on-chain analytics',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     'simulation',
   ],
   openGraph: {
-    title: 'ECHO AI — What if your wallet had another life?',
+    title: 'ECHO AI² — What if your wallet had another life?',
     description:
       'Connect a wallet. Meet the AI version of it. Same start, different choices. Who will do better?',
     type: 'website',

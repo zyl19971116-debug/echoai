@@ -73,7 +73,7 @@ export function EchoLogo({ className, size = 26, compact = false }: EchoLogoProp
       <EchoMark size={size} gradientId="echo-logo-grad" />
       {!compact && (
         <span className="text-[0.95rem] font-semibold uppercase tracking-[0.24em] text-white">
-          ECHO<span className="ml-1.5 font-light text-echo-faint">AI</span>
+          ECHO<span className="ml-1.5 font-light text-echo-faint">AI²</span>
         </span>
       )}
     </span>

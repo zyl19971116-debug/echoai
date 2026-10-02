@@ -11,7 +11,7 @@ export default function NotFound() {
           <p className="kicker">404</p>
           <h1 className="display mt-4 text-[1.8rem] uppercase text-white">This shadow does not exist</h1>
           <p className="mx-auto mt-5 max-w-md text-[0.86rem] leading-relaxed text-echo-muted">
-            The page you were looking for is not part of the ECHO AI experiment. Head back and meet an AI Shadow
+            The page you were looking for is not part of the ECHO AI² experiment. Head back and meet an AI Shadow
             instead.
           </p>
           <div className="mt-8 flex justify-center gap-3">

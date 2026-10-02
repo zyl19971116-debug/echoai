@@ -68,7 +68,7 @@ export function WalletModal({
         <p className="flex items-start gap-2.5 text-[0.72rem] leading-relaxed text-echo-muted">
           <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-echo-cyan" />
           <span>
-            ECHO AI reads <strong className="font-semibold text-white/90">public on-chain data only</strong>. We never
+            ECHO AI² reads <strong className="font-semibold text-white/90">public on-chain data only</strong>. We never
             request your seed phrase or private key, and connecting a wallet never gives us custody of your assets.
           </span>
         </p>

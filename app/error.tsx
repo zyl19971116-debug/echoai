@@ -26,7 +26,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
         </span>
         <h1 className="display mt-6 text-[1.6rem] uppercase text-white">The simulation stumbled</h1>
         <p className="mx-auto mt-4 max-w-md text-[0.86rem] leading-relaxed text-echo-muted">
-          Something failed while rendering this screen. No wallet data was affected — ECHO AI never holds custody of
+          Something failed while rendering this screen. No wallet data was affected — ECHO AI² never holds custody of
           anything.
         </p>
         {error.digest && <p className="mono mt-4 text-[0.66rem] text-echo-faint">Reference: {error.digest}</p>}

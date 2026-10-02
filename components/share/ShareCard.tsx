@@ -145,7 +145,7 @@ export function ShareCard({ humanGrowth, aiGrowth, days, archetype, address, cla
 
     ctx.font = '600 30px Inter, "Segoe UI", Arial, sans-serif';
     ctx.fillStyle = '#EAF0FF';
-    drawTracked(ctx, 'ECHO AI', markX + 46, markY + 16, 8);
+    drawTracked(ctx, 'ECHO AI²', markX + 46, markY + 16, 8);
 
     /* ---- eyebrow ---- */
     ctx.font = '600 26px Inter, "Segoe UI", Arial, sans-serif';
@@ -269,7 +269,7 @@ export function ShareCard({ humanGrowth, aiGrowth, days, archetype, address, cla
           <div className="relative flex h-full flex-col justify-between p-8">
             <span className="flex items-center gap-2.5">
               <EchoMark size={22} gradientId="share-mark" />
-              <span className="text-[0.66rem] font-semibold uppercase tracking-[0.26em] text-white">Echo AI</span>
+              <span className="text-[0.66rem] font-semibold uppercase tracking-[0.26em] text-white">ECHO AI²</span>
             </span>
 
             <div className="text-center">
